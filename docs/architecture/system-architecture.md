@@ -43,11 +43,11 @@
 ### 1. Click Ingestion Layer
 This is where all the clicks will first enter the system.
 
-- **Load Balancer (NGINX)**: Using NGINX as it's a lightweight and can handle concurrent connections. It will spread the incoming click requests across multiple API instances so no single server gets overwhelmed.
+- **Load Balancer (NGINX)**: Using NGINX as it's lightweight and can handle concurrent connections. It will spread the incoming click requests across multiple API instances so no single server gets overwhelmed.
 
 - **Click Ingestion API (Node.js)**: A simple Node.js HTTP server. The primary job of this server is to validate the click data and add some additional information like timestamps and IP addresses before passing it along.
 
-- **Rate Limiting**: Basic rate limiting to prevent Denial of Sevice attacks. Set it to 1000 clicks per minute per IP address
+- **Rate Limiting**: Basic rate limiting to prevent Denial of Service attacks. Set it to 1000 clicks per minute per IP address
 
 ### 2. Message Queue (Pub-Sub Core)
 Heart of the pub-sub architecture. Using Kafka for pub-sub
@@ -62,9 +62,9 @@ Heart of the pub-sub architecture. Using Kafka for pub-sub
 - **Publisher/Subscriber Pattern**: The ingestion API publishes to click-events, then each service subscribes to what it needs. This way if we want to add a new service later (eg reporting), just need to subscribe it to the right topics.
 
 ### 3. Processing Services
-I split the processing into three separate services as per microservices architecture:
+Split the processing into three separate services as per microservices architecture:
 
-- **Fraud Detection Service**: This is the trickiest part. Simple checks based on velocity and location.We will implement a basic fraud detection using IP analysis, click velocity checks, and user agent validation. It's not going to be as sophisticated as a real ad platforms, however would catch obvious bot traffic.
+- **Fraud Detection Service**: This is the most complex component. Simple checks based on velocity and location. We will implement a basic fraud detection using IP analysis, click velocity checks, and user agent validation. It's not going to be as sophisticated as real ad platforms, however would catch obvious bot traffic.
 
 - **Billing Service**: Handles the money side of things. It calculates costs based on campaign bid amounts and updates advertiser budgets. Will use transactions here since we're dealing with financial data.
 
