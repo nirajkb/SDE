@@ -1,0 +1,28 @@
+# Ignore everything in SDE directory
+*
+
+# Except the system architecture document
+!docs/
+!docs/architecture/
+!docs/architecture/system-architecture.md
+
+# Keep directory structure with .gitkeep files
+!docs/database/
+!docs/database/.gitkeep
+!docs/presentation/
+!docs/presentation/.gitkeep
+!docs/report/
+!docs/report/.gitkeep
+!src/
+!src/services/
+!src/services/.gitkeep
+!src/config/
+!src/config/.gitkeep
+!tests/
+!tests/.gitkeep
+!deployment/
+!deployment/.gitkeep
+
+# Keep this gitignore file and README
+!.gitignore
+!README.md
