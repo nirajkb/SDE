@@ -64,7 +64,7 @@ Heart of the pub-sub architecture. Using Kafka for pub-sub
 ### 3. Processing Services
 Split the processing into three separate services as per microservices architecture:
 
-- **Fraud Detection Service**: This is the most complex component. Simple checks based on velocity and location. We will implement a basic fraud detection using IP analysis, click velocity checks, and user agent validation. It's not going to be as sophisticated as real ad platforms, however would catch obvious bot traffic.
+- **Fraud Detection Service**: This is the most complex component. Simple checks based on velocity and location. We will implement a basic fraud detection using IP analysis, click velocity checks, and user agent validation. It's not going to be as sophisticated as real ad platforms, but would catch obvious bot traffic.
 
 - **Billing Service**: Handles the money side of things. It calculates costs based on campaign bid amounts and updates advertiser budgets. Will use transactions here since we're dealing with financial data.
 

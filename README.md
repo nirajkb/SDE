@@ -10,8 +10,10 @@ This repository contains the design and implementation of a publish-subscribe ba
 SDE/
 ├── docs/
 │   ├── architecture/
-│   │   └── system-architecture.md    # Main architecture document
-│   ├── database/                     # Database design documents
+│   │   ├── system-architecture.md    # High-level system design
+│   │   └── detailed-design.md        # Service patterns and algorithms
+│   ├── database/
+│   │   └── schema-design.md          # Complete MySQL schema
 │   ├── presentation/                 # Presentation materials
 │   └── report/                       # Technical reports
 ├── src/
@@ -24,19 +26,31 @@ SDE/
 ## Current Status
 
 **Committed Files:**
-- `docs/architecture/system-architecture.md` - Complete system architecture documentation
+- `docs/architecture/system-architecture.md` - High-level system architecture and component design
+- `docs/architecture/detailed-design.md` - Service patterns, algorithms, and implementation details
+- `docs/database/schema-design.md` - Complete MySQL database schema with tables and relationships
 
 **Work in Progress:**
-- Implementation files
-- Database schemas
-- Test suites
+- Implementation files (Node.js services)
+- Test suites and validation
 - Deployment configurations
+- Presentation materials
 
 ## Getting Started
 
-1. Review the system architecture: `docs/architecture/system-architecture.md`
-2. Implementation files will be added incrementally
-3. Each component will be committed separately after review
+1. **System Overview**: Start with `docs/architecture/system-architecture.md` for the high-level design
+2. **Technical Details**: Review `docs/architecture/detailed-design.md` for service patterns and algorithms
+3. **Database Design**: Check `docs/database/schema-design.md` for complete schema specifications
+4. **Implementation**: Source code and tests will be added incrementally
+
+## Documentation
+
+### Architecture Documentation
+- **system-architecture.md**: Pub-sub architecture overview, component relationships, and technology choices
+- **detailed-design.md**: Message flow design, fraud detection algorithms, billing logic, and error handling
+
+### Database Documentation  
+- **schema-design.md**: MySQL table definitions, indexing strategy, and data management approaches
 
 ## Architecture Overview
 
