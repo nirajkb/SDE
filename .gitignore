@@ -1,10 +1,12 @@
 # Ignore everything in SDE directory
 *
 
-# Except the system architecture document
+# Except the architecture and database documents
 !docs/
 !docs/architecture/
 !docs/architecture/system-architecture.md
+!docs/architecture/detailed-design.md
+!docs/database/schema-design.md
 
 # Keep directory structure with .gitkeep files
 !docs/database/
