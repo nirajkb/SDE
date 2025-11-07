@@ -10,7 +10,7 @@ This repository contains the design and implementation of a publish-subscribe ba
 SDE/
 ├── docs/
 │   ├── architecture/
-│   │   └── system-architecture.md    # ✅ Main architecture document
+│   │   └── system-architecture.md    # Main architecture document
 │   ├── database/                     # Database design documents
 │   ├── presentation/                 # Presentation materials
 │   └── report/                       # Technical reports
