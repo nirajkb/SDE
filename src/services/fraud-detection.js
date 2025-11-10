@@ -2,7 +2,6 @@
 // Listens for click events and checks if they look suspicious
 
 const eventBus = require('../config/event-bus');
-const logger = require('../utils/logger');
 
 class FraudDetectionService {
   constructor() {
@@ -11,7 +10,7 @@ class FraudDetectionService {
   }
 
   start() {
-    logger.log('FraudDetection', 'Starting service...');
+    console.log('[FraudDetection] Starting service...');
     
     // Subscribe to click-events topic
     // Whenever a click is published, our checkForFraud function will run
@@ -19,11 +18,15 @@ class FraudDetectionService {
       this.checkForFraud(clickEvent);
     });
     
-    logger.log('FraudDetection', 'Subscribed to click-events');
+    console.log('[FraudDetection] Subscribed to click-events\n');
   }
 
   checkForFraud(clickEvent) {
-    logger.log('FraudDetection', `Checking click: ${clickEvent.event_id}`);
+    console.log('-'.repeat(60));
+    console.log('FRAUD DETECTION');
+    console.log('-'.repeat(60));
+    console.log(`Click ID: ${clickEvent.event_id}`);
+    console.log(`Advertiser: ${clickEvent.advertiser_id}`);
     
     this.clicksChecked++;
     
@@ -31,18 +34,22 @@ class FraudDetectionService {
     // In a production-grade deployment, it would be far more complex
     let fraudScore = 0;
     
+    // Get user agent and IP from nested structure
+    const userAgent = clickEvent.click_data?.user_agent || clickEvent.user_agent || '';
+    const ipAddress = clickEvent.click_data?.ip_address || clickEvent.ip_address || '';
+    
     // Check 1: Is user agent missing?
-    if (!clickEvent.user_agent || clickEvent.user_agent === 'unknown') {
+    if (!userAgent || userAgent === 'unknown') {
       fraudScore += 0.3;
     }
     
     // Check 2: Does user agent contain 'bot'?
-    if (clickEvent.user_agent.toLowerCase().includes('bot')) {
+    if (userAgent.toLowerCase().includes('bot')) {
       fraudScore += 0.5;
     }
     
     // Check 3: Is IP address suspicious?
-    if (clickEvent.ip_address.startsWith('10.') || clickEvent.ip_address.startsWith('192.168.')) {
+    if (ipAddress.startsWith('10.') || ipAddress.startsWith('192.168.')) {
       fraudScore += 0.2;
     }
     
@@ -53,7 +60,9 @@ class FraudDetectionService {
     if (fraudScore >= 0.7) {
       // This is fraud!
       this.fraudFound++;
-      logger.log('FraudDetection', `FRAUD DETECTED! Score: ${fraudScore.toFixed(2)}`);
+      console.log(`Fraud Score: ${fraudScore.toFixed(2)} - FRAUD DETECTED!`);
+      console.log(`Decision: BLOCKED`);
+      console.log('-'.repeat(60) + '\n');
       
       // Publish fraud alert
       eventBus.publish('fraud-alerts', {
@@ -64,7 +73,9 @@ class FraudDetectionService {
       
     } else {
       // Click looks good, pass it along
-      logger.log('FraudDetection', `Click is valid. Score: ${fraudScore.toFixed(2)}`);
+      console.log(`Fraud Score: ${fraudScore.toFixed(2)} - VALID`);
+      console.log(`Decision: APPROVED - Forwarding to billing`);
+      console.log('-'.repeat(60) + '\n');
       
       // Publish to validated-clicks topic
       eventBus.publish('validated-clicks', {

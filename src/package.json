@@ -1,0 +1,15 @@
+{
+  "name": "ad-click-pubsub",
+  "version": "1.0.0",
+  "description": "Ad click charging system using pub-sub architecture - Academic project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["pub-sub", "event-driven", "academic"],
+  "author": "Student Project",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

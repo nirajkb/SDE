@@ -12,7 +12,7 @@ class AnalyticsService {
   }
 
   start() {
-    logger.log('AnalyticsService', 'Starting service...');
+    console.log('[AnalyticsService] Starting service...');
     
     // Subscribe to billing-events topic
     // Track all successful billing transactions
@@ -20,12 +20,10 @@ class AnalyticsService {
       this.updateStats(billingEvent);
     });
     
-    logger.log('AnalyticsService', 'Subscribed to billing-events');
+    console.log('[AnalyticsService] Subscribed to billing-events\n');
   }
 
   updateStats(billingEvent) {
-    logger.log('AnalyticsService', `Updating stats for transaction: ${billingEvent.transaction_id}`);
-    
     // Update overall stats
     this.totalClicks++;
     this.totalRevenue += billingEvent.amount;
@@ -44,7 +42,11 @@ class AnalyticsService {
     this.campaignStats[campaignId].clicks++;
     this.campaignStats[campaignId].revenue += billingEvent.amount;
     
-    logger.log('AnalyticsService', `Total revenue now: $${this.totalRevenue.toFixed(2)}`);
+    console.log('ANALYTICS UPDATED');
+    console.log(`   Total Clicks Processed: ${this.totalClicks}`);
+    console.log(`   Total Revenue: $${this.totalRevenue.toFixed(2)}`);
+    console.log(`   Campaign ${campaignId}: ${this.campaignStats[campaignId].clicks} clicks, $${this.campaignStats[campaignId].revenue.toFixed(2)}`);
+    console.log('');
   }
 
   getStats() {

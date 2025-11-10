@@ -3,7 +3,6 @@
 
 const express = require('express');
 const eventBus = require('../config/event-bus');
-const logger = require('../utils/logger');
 
 class ClickIngestionService {
   constructor(port = 3000) {
@@ -36,17 +35,32 @@ class ClickIngestionService {
           ad_id: clickData.ad_id,
           campaign_id: clickData.campaign_id,
           advertiser_id: clickData.advertiser_id,
-          bid_amount: clickData.bid_amount || 0.50,
-          ip_address: req.ip || '127.0.0.1',
-          user_agent: req.headers['user-agent'] || 'unknown'
+          cost_data: {
+            bid_amount: clickData.bid_amount || 0.50,
+            currency: 'USD'
+          },
+          click_data: {
+            ip_address: req.ip || '127.0.0.1',
+            user_agent: req.headers['user-agent'] || 'unknown'
+          }
         };
         
-        logger.log('ClickIngestion', `Received click for ad: ${clickEvent.ad_id}`);
+        this.clicksReceived++;
+        
+        console.log('\n' + '='.repeat(60));
+        console.log(`CLICK RECEIVED #${this.clicksReceived}`);
+        console.log('='.repeat(60));
+        console.log(`Ad ID: ${clickEvent.ad_id}`);
+        console.log(`Campaign: ${clickEvent.campaign_id}`);
+        console.log(`Advertiser: ${clickEvent.advertiser_id}`);
+        console.log(`Bid Amount: $${clickEvent.cost_data.bid_amount.toFixed(2)}`);
+        console.log(`Event ID: ${clickEvent.event_id}`);
+        console.log('─'.repeat(60));
+        console.log('Publishing to event bus...');
+        console.log('='.repeat(60) + '\n');
         
         // Publish to event bus - this is the pub-sub part!
         eventBus.publish('click-events', clickEvent);
-        
-        this.clicksReceived++;
         
         res.json({ 
           success: true, 
@@ -55,7 +69,7 @@ class ClickIngestionService {
         });
         
       } catch (err) {
-        logger.error('ClickIngestion', err.message);
+        console.error('[ClickIngestion] Error:', err.message);
         res.status(500).json({ error: 'Internal error' });
       }
     });
@@ -67,18 +81,25 @@ class ClickIngestionService {
         clicksReceived: this.clicksReceived 
       });
     });
+
+    // Stats endpoint
+    this.app.get('/stats', (req, res) => {
+      res.json({
+        clicksReceived: this.clicksReceived
+      });
+    });
   }
 
   start() {
     this.server = this.app.listen(this.port, () => {
-      logger.log('ClickIngestion', `Started on port ${this.port}`);
+      console.log(`\n[ClickIngestion] Started on port ${this.port}\n`);
     });
   }
 
   stop() {
     if (this.server) {
       this.server.close();
-      logger.log('ClickIngestion', 'Stopped');
+      console.log('[ClickIngestion] Stopped');
     }
   }
 }

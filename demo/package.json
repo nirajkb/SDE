@@ -1,0 +1,26 @@
+{
+  "name": "ad-click-pubsub-demo",
+  "version": "1.0.0",
+  "description": "Pub-Sub architecture demonstration for ad click charging system",
+  "main": "demo-runner.js",
+  "scripts": {
+    "start": "node demo-runner.js",
+    "start:auto": "node demo-runner.js --auto-test",
+    "test": "node test-client.js",
+    "test:multiple": "node test-client.js --count 5"
+  },
+  "keywords": [
+    "pub-sub",
+    "event-driven",
+    "microservices",
+    "demo"
+  ],
+  "author": "SDE Project",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

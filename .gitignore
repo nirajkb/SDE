@@ -16,10 +16,7 @@
 !docs/report/
 !docs/report/.gitkeep
 !src/
-!src/services/
-!src/services/.gitkeep
-!src/config/
-!src/config/.gitkeep
+!src/**/*
 !tests/
 !tests/.gitkeep
 !deployment/
@@ -28,3 +25,8 @@
 # Keep this gitignore file and README
 !.gitignore
 !README.md
+!DEMO-QUICKSTART.md
+
+# Allow demo directory
+!demo/
+!demo/**/*
