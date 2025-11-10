@@ -274,4 +274,3 @@ Campaign Total: $0.60
 4. **Simplicity**: Start simple, add complexity as needed
 
 
-**End of Report**

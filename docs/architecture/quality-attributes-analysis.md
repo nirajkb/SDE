@@ -2,14 +2,12 @@
 
 ## Overview
 
-This document analyzes three key quality attributes implemented in the Ad Click Charging System: **Performance**, **Scalability**, and **Reliability**. Each attribute is justified with design decisions and proof of implementation.
+This document documents three key quality attributes implemented in this project: **Performance**, **Scalability**, and **Reliability**. Justification for each attribute is provided through design decisions and proofs of implementation is also added.
+cument
 
 ---
 
 ## 1. Performance
-
-### Definition
-Performance refers to how fast the system responds to user requests and processes events.
 
 ### Target Metrics
 - API response time: < 100ms
@@ -33,7 +31,6 @@ eventBus.publish('click-events', clickEvent);
 res.json({ success: true, message: 'Click received' });
 ```
 
-**Proof**: API returns immediately after publishing, not after full processing chain completes.
 
 #### 1.2 In-Memory Event Bus
 **Implementation**: Used Node.js EventEmitter for fast message passing
@@ -48,15 +45,13 @@ publish(topic, data) {
 }
 ```
 
-**Proof**: Events are delivered instantly without external dependencies.
 
 #### 1.3 Minimal Processing Per Service
-**Implementation**: Each service does only its specific job
+**Implementation**: Each service performs only the specified job
 - Fraud Detection: Simple scoring algorithm
 - Billing: Basic calculations
 - Analytics: Counter updates
 
-**Proof**: Each service completes in milliseconds as shown in demo output.
 
 ### Performance Test Results
 
@@ -70,9 +65,6 @@ From demo run with 20 clicks:
 ---
 
 ## 2. Scalability
-
-### Definition
-Scalability is the system's ability to handle increased load by adding more resources.
 
 ### Target Metrics
 - Support 10,000 clicks/second (design goal)
@@ -95,7 +87,6 @@ billing.start();         // Can run multiple instances
 analytics.start();       // Can run multiple instances
 ```
 
-**Proof**: Architecture supports running N instances of each subscriber.
 
 #### 2.2 Stateless Services
 **Implementation**: Services don't store state between requests
@@ -103,7 +94,6 @@ analytics.start();       // Can run multiple instances
 - Billing: Budget stored separately (would be in DB)
 - Analytics: Aggregates can be distributed
 
-**Proof**: Any instance can handle any message.
 
 #### 2.3 Topic-Based Routing
 **Implementation**: Multiple services can subscribe to same topic
@@ -117,8 +107,6 @@ subscribe(topic, callback) {
   this.on(topic, callback);  // Multiple subscribers allowed
 }
 ```
-
-**Proof**: Event bus supports multiple subscribers per topic.
 
 ### Scalability Analysis
 
@@ -146,9 +134,6 @@ Analytics: 2 instances (Kafka consumer group)
 
 ## 3. Reliability
 
-### Definition
-Reliability is the system's ability to function correctly even when things go wrong.
-
 ### Target Metrics
 - 99.9% uptime
 - No data loss
@@ -171,7 +156,6 @@ if (budget.remaining < cost) {
 }
 ```
 
-**Proof**: System prevents charging when budget insufficient.
 
 #### 3.2 Fraud Detection
 **Implementation**: Validate clicks before billing
@@ -189,7 +173,6 @@ if (fraudScore >= 0.7) {
 }
 ```
 
-**Proof**: Fraudulent clicks never reach billing service.
 
 #### 3.3 Error Handling
 **Implementation**: Try-catch blocks and validation
@@ -211,7 +194,6 @@ try {
 }
 ```
 
-**Proof**: System handles errors without crashing.
 
 #### 3.4 Service Independence
 **Implementation**: Services operate independently
@@ -219,7 +201,6 @@ try {
 - If analytics fails, billing continues
 - No cascading failures
 
-**Proof**: Each service subscribes independently and can fail without affecting others.
 
 ### Reliability Test Scenarios
 

@@ -22,12 +22,10 @@
 ### 3. README File
 - [DONE] Main `README.md` - Project overview
 - [DONE] `src/README.md` - Source code documentation
-- [DONE] `demo/README.md` - Demo documentation
 - [DONE] `docs/README.md` - Documentation index
-- [DONE] `DEMO-QUICKSTART.md` - Quick start guide
 
 ### 4. Project Report
-- [DONE] `docs/report/technical-report.md` - Complete technical report including:
+- [DONE] `docs/report/technical-report.md` - Complete report including:
   - Executive summary
   - Problem statement and solution
   - System architecture
@@ -44,7 +42,7 @@
   - Solution architecture
   - Component details
   - Technology stack
-  - Quality attributes (3)
+  - Three Quality attributes
   - Live demo guide
   - Code walkthrough
   - Testing results
@@ -108,68 +106,4 @@
 | 4 | Project Report | COMPLETE | `docs/report/technical-report.md` |
 | 5 | Presentation Slides | COMPLETE | `docs/presentation/presentation-slides.md` |
 | 6 | Presentation Demo | COMPLETE | `src/` (with budget tracking) |
-| 7 | Quality Attributes (3) | COMPLETE | `docs/architecture/quality-attributes-analysis.md` |
-
-## How to Present
-
-### Before Presentation
-1. Test the demo: `cd src && npm start`
-2. Review slides: `docs/presentation/presentation-slides.md`
-3. Prepare test clicks
-4. Have GitHub repo open
-
-### During Presentation
-1. Show slides (Slides 1-10): Architecture overview
-2. **Live Demo** (Slide 14):
-   - Start system: `npm start`
-   - Send clicks: `curl` commands
-   - Show budget tracking output
-   - Display final statistics
-3. Show slides (Slides 15-20): Code and results
-4. Q&A (Slide 25)
-
-### Demo Commands
-```bash
-# Terminal 1: Start system
-cd src
-npm start
-
-# Terminal 2: Send test clicks
-curl -X POST http://localhost:3000/click \
-  -H "Content-Type: application/json" \
-  -d '{"ad_id":"ad-001","campaign_id":"camp-101","advertiser_id":"adv-501","bid_amount":0.75}'
-
-# Send multiple clicks
-for i in {1..5}; do 
-  curl -s -X POST http://localhost:3000/click \
-    -H "Content-Type: application/json" \
-    -d "{\"ad_id\":\"ad-00$i\",\"campaign_id\":\"camp-10$((i%3+1))\",\"advertiser_id\":\"adv-50$((i%4+1))\",\"bid_amount\":0.$((60+i*5))}"; 
-  sleep 1; 
-done
-
-# Stop with Ctrl+C to see final budget summary
-```
-
-## What the Demo Shows
-
-### Publisher Side
-- [DONE] Clicks received via HTTP
-- [DONE] Events published to topics
-- [DONE] Request/response flow
-
-### Consumer Side
-- [DONE] Fraud detection scores
-- [DONE] **Billing transactions with details**:
-  - Amount charged
-  - Budget before/after
-  - Total spent
-  - Campaign totals
-- [DONE] Analytics updates
-- [DONE] **Final budget summary**:
-  - Per-advertiser budgets
-  - Spending percentages
-  - Campaign spending breakdown
-
-## All Requirements Met!
-
-Every deliverable is complete and ready for submission/presentation.
+| 7 | Three Quality Attributes | COMPLETE | `docs/architecture/quality-attributes-analysis.md` |

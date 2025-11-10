@@ -31,6 +31,8 @@
 !.gitignore
 !README.md
 !PROJECT-CHECKLIST.md
+!PROJECT-CHECKLIST.pdf
+!docs/**/*.pdf
 
 # Allow demo directory
 !demo/

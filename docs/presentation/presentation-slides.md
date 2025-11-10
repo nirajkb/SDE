@@ -1,22 +1,18 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
 # Ad Click Charging System
 ## Pub-Sub Architecture Implementation
 
-**Software Design and Engineering**  
-**Academic Project - November 2024**
+**NIRAJ KUMAR BHANDARI**  
+**M25AI1063**
 
 ---
 
-## Slide 1: Title
-
-# Ad Click Charging System
-### Using Publish-Subscribe Architecture
-
-**Student Project**  
-Software Design and Engineering Course
-
----
-
-## Slide 2: Problem Statement
+## Problem Statement
 
 ### The Challenge
 
@@ -31,11 +27,11 @@ Online advertising platforms need to:
 
 ---
 
-## Slide 3: Solution - Pub-Sub Architecture
+## Solution - Pub-Sub Architecture
 
 ### What is Pub-Sub?
 
-**Publish-Subscribe Pattern**:
+**Publisher-Subscriber Pattern**:
 - Publishers send messages to topics
 - Subscribers listen to topics they care about
 - Publishers and subscribers don't know about each other
@@ -47,7 +43,7 @@ Online advertising platforms need to:
 
 ---
 
-## Slide 4: System Architecture
+## System Architecture
 
 ```
         Client
@@ -74,7 +70,7 @@ Online advertising platforms need to:
 
 ---
 
-## Slide 5: Event Flow
+## Event Flow
 
 ### How a Click is Processed
 
@@ -84,11 +80,13 @@ Online advertising platforms need to:
 4. **Billing Service** → Charges advertiser, publishes to `billing-events`
 5. **Analytics Service** → Updates metrics
 
-**Key Point**: Each service works independently!
+**Important to Note**: Each service works independently.
 
 ---
 
-## Slide 6: Components
+<!-- fit -->
+
+## Components
 
 ### Publisher
 **Click Ingestion Service**
@@ -114,26 +112,9 @@ Online advertising platforms need to:
 
 ---
 
-## Slide 7: Technology Stack
+## Fraud Detection
 
-### What We Used
-
-- **Language**: JavaScript (Node.js)
-- **Web Framework**: Express.js
-- **Event System**: Node.js EventEmitter
-- **Package Manager**: npm
-
-### Why Node.js?
-- Good for I/O operations
-- Built-in event system
-- Easy to learn
-- Large community
-
----
-
-## Slide 8: Fraud Detection
-
-### How We Detect Fraud
+### A simple scoring system to detect fraud
 
 **Scoring System**:
 - Missing user agent: +0.3
@@ -145,13 +126,15 @@ Online advertising platforms need to:
 - Score >= 0.7 → Fraud (blocked)
 - Score < 0.7 → Valid (processed)
 
-**Result**: Protects advertisers from fake clicks
+**Expected Outcome**: It will protect advertisers from fraudulent charges.
 
 ---
 
-## Slide 9: Billing Logic
+<!-- fit -->
 
-### How We Calculate Cost
+## Billing Logic
+
+### Calulation
 
 ```
 Final Cost = Bid Amount × Quality Score × Time Adjustment
@@ -171,7 +154,9 @@ Final Cost = Bid Amount × Quality Score × Time Adjustment
 
 ---
 
-## Slide 10: Demo - Budget Tracking
+<!-- fit -->
+
+## Demo - Budget Tracking
 
 ### Real-Time Budget Updates
 
@@ -188,7 +173,7 @@ Campaign Total: $0.60
 --------------------------------------------------
 ```
 
-**Shows**:
+**We can observe the following**:
 - Amount charged
 - Budget before/after
 - Total spending
@@ -196,7 +181,7 @@ Campaign Total: $0.60
 
 ---
 
-## Slide 11: Quality Attribute #1 - Performance
+## Quality Attribute #1 - Performance
 
 ### Target: Fast Response Times
 
@@ -211,11 +196,13 @@ Campaign Total: $0.60
 - Average response: ~50ms
 - End-to-end processing: ~300ms
 
-**Proof**: API returns immediately after publishing event
+**Important to Note**: API returns immediately after publishing event
 
 ---
 
-## Slide 12: Quality Attribute #2 - Scalability
+<!-- fit -->
+
+## Quality Attribute #2 - Scalability
 
 ### Target: Handle Growing Traffic
 
@@ -232,22 +219,23 @@ Current: 1 publisher, 3 subscribers
 Future:  3 publishers, 15 subscribers
          (5 fraud, 5 billing, 5 analytics)
 ```
-
-**Proof**: Can run multiple instances of any service
+**Important to Note**: Can run multiple instances of any service
 
 ---
 
-## Slide 13: Quality Attribute #3 - Reliability
+<!-- fit -->
+
+## Quality Attribute #3 - Reliability
 
 ### Target: Handle Errors Gracefully
 
 **Goal**: 99.9% uptime, no data loss
 
-**How We Achieved It**:
-- Budget validation (prevents overspending)
-- Fraud detection (blocks bad clicks)
-- Input validation (rejects bad data)
-- Error handling (try-catch blocks)
+**Key Actions**:
+- Budget validation (prevent overspending)
+- Fraud detection (exclude bad clicks)
+- Input validation (reject bad data)
+- Error handling (graceful implementation)
 
 **Test Results**:
 - Budget exhaustion: Handled correctly
@@ -256,9 +244,7 @@ Future:  3 publishers, 15 subscribers
 
 ---
 
-## Slide 14: Live Demo
-
-### Let's See It In Action!
+## Demo
 
 **Demo Steps**:
 1. Start the system
@@ -267,15 +253,17 @@ Future:  3 publishers, 15 subscribers
 4. See budget tracking
 5. View final statistics
 
-**What to Watch For**:
-- Events flowing through topics
-- Fraud scores calculated
-- Budgets decreasing
-- Analytics updating
+**Key Actions**:
+- Events flow through topics
+- Fraud scores are calculated
+- Budgets decrease
+- Analytics get updated
 
 ---
 
-## Slide 15: Code Walkthrough
+<!-- fit -->
+
+## Code Walkthrough
 
 ### Key Code Snippets
 
@@ -302,9 +290,9 @@ class EventBus extends EventEmitter {
 
 ---
 
-## Slide 16: Testing Results
+<!-- fit -->
 
-### What We Tested
+## Test Results
 
 **Test 1: Single Click**
 - Processed successfully
@@ -322,29 +310,12 @@ class EventBus extends EventEmitter {
 
 ---
 
-## Slide 17: Challenges Faced
 
-### Problems and Solutions
-
-**Challenge 1: Event Ordering**
-- Problem: Events might process out of order
-- Solution: Single-threaded event loop
-
-**Challenge 2: Budget Consistency**
-- Problem: Simultaneous charges
-- Solution: Synchronous budget checks
-
-**Challenge 3: Fraud Accuracy**
-- Problem: Simple rules not accurate
-- Solution: Basic scoring (ML for production)
-
----
-
-## Slide 18: Production vs Our System
+## Production vs the Current System Implementation
 
 ### What's Different?
 
-| Aspect | Our System | Production |
+| Aspect | Current Implementation | Production |
 |--------|------------|------------|
 | Message Broker | EventEmitter | Apache Kafka |
 | Database | In-memory | MySQL |
@@ -352,11 +323,13 @@ class EventBus extends EventEmitter {
 | Scale | 10s/sec | 10,000s/sec |
 | Deployment | 1 machine | Cluster |
 
-**Key Point**: Same architecture, different scale!
+**Please note**: Current Implementation uses same architecture, however scale is completely different.
 
 ---
 
-## Slide 19: What We Learned
+<!-- fit -->
+
+## Learning
 
 ### Key Takeaways
 
@@ -373,13 +346,15 @@ class EventBus extends EventEmitter {
    - Must design them in
    - Can't add later
 
-4. **Start Simple**
+4. **Start Small and Keep it Simple**
    - Build working system first
    - Add complexity as needed
 
 ---
 
-## Slide 20: Future Enhancements
+<!-- fit -->
+
+## Future Enhancements
 
 ### What's Next?
 
@@ -393,11 +368,11 @@ class EventBus extends EventEmitter {
 - Apache Kafka integration
 - Machine learning for fraud
 - A/B testing
-- Cloud deployment (AWS)
+- Cloud deployment
 
 ---
 
-## Slide 21: Project Structure
+## Project Structure
 
 ### Code Organization
 
@@ -415,68 +390,16 @@ src/
 └── app.js                    # Main entry
 ```
 
-**Clean and Simple!**
-
 ---
 
-## Slide 22: Documentation
-
-### What We Delivered
+## Documentation
 
 - **Architecture Diagrams**  
 - **Source Code** (GitHub)  
 - **README Files**  
-- **Technical Report**  
+- **Project Report**  
 - **Quality Attributes Analysis**  
-- **This Presentation**  
-- **Working Demo**
-
-**Everything documented and explained!**
-
----
-
-## Slide 23: How to Run
-
-### Try It Yourself!
-
-```bash
-# Install dependencies
-cd src
-npm install
-
-# Start the system
-npm start
-
-# Send a test click (in another terminal)
-curl -X POST http://localhost:3000/click \
-  -H "Content-Type: application/json" \
-  -d '{"ad_id":"ad-001","campaign_id":"camp-101",
-       "advertiser_id":"adv-501","bid_amount":0.75}'
-```
-
-**GitHub**: https://github.com/nirajkb/SDE
-
----
-
-## Slide 24: Conclusion
-
-### Project Summary
-
-**What We Built**:
-- Working pub-sub system
-- 4 services (1 publisher, 3 subscribers)
-- Real-time budget tracking
-- Fraud detection
-- Complete documentation
-
-**What We Demonstrated**:
-- Performance (fast response)
-- Scalability (horizontal scaling)
-- Reliability (error handling)
-
-**Academic Value**:
-- Learned architecture patterns
-- Practiced system design
-- Analyzed quality attributes
+- **Project Presentation (current presentation)**  
+- **Demo Recording**
 
 ---
