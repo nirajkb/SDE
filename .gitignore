@@ -6,7 +6,12 @@
 !docs/architecture/
 !docs/architecture/system-architecture.md
 !docs/architecture/detailed-design.md
+!docs/architecture/quality-attributes-analysis.md
 !docs/database/schema-design.md
+!docs/presentation/
+!docs/presentation/presentation-slides.md
+!docs/report/
+!docs/report/technical-report.md
 
 # Keep directory structure with .gitkeep files
 !docs/database/
@@ -25,7 +30,7 @@
 # Keep this gitignore file and README
 !.gitignore
 !README.md
-!DEMO-QUICKSTART.md
+!PROJECT-CHECKLIST.md
 
 # Allow demo directory
 !demo/
