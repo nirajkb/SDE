@@ -1,20 +1,14 @@
-# Ad Click Charging System - Project Report
-
-**Course**: Software Design and Engineering  
-**Project**: Pub-Sub Architecture Implementation  
-**Date**: November 2025
+# A Project Report on the pub-sub implementation for an Ad Click Charging System
 
 ---
 
-## Executive Summary
+## Overview
 
-This project implements an ad click charging system using the publish-subscribe (pub-sub) architectural pattern. The system demonstrates how multiple services can communicate asynchronously through events, enabling scalability and loose coupling. The implementation includes click ingestion, fraud detection, billing, and analytics services.
+As part of this project, we have implemeted a pub-sub pattern to build an ad click charging system. The system uses multiple independent services, async communication, messaging queues and events to achieve highly scalable system. 
 
-**Key Achievements**:
-- Working pub-sub implementation with 4 services
-- Real-time budget tracking and fraud detection
-- Comprehensive documentation and quality analysis
-- Demonstration of 3 quality attributes: Performance, Scalability, Reliability
+**Key Callouts**:
+- Implemented 4 services for the pub-sub model
+- Implemented real-time budget tracking and fraud detection
 
 ---
 
@@ -22,27 +16,20 @@ This project implements an ad click charging system using the publish-subscribe 
 
 ### 1.1 Problem Statement
 
-Online advertising platforms need to process millions of ad clicks per day, charging advertisers for each valid click. The system must:
+Increasingly number of online platforms are employing some form of advertisement services for monetization. As these platform grow they need a scalable and efficient system to process millions of  clicks per day. Such an system must:
 - Handle high volume of clicks
 - Detect fraudulent clicks
 - Process billing accurately
-- Track analytics in real-time
-- Scale horizontally as traffic grows
+- Track analytics in real-time/near real-time
+- Scale seamlessly as traffic grows
 
-### 1.2 Solution Approach
+### 1.2 Solution
 
-We chose the **pub-sub architecture** because:
-- Services don't need to know about each other
-- Easy to add new services without modifying existing ones
-- Natural fit for event-driven workflows
-- Supports horizontal scaling
+The choice of pub-sub model was driven by LinkedIn's implementation of events. The pub-sub makes it easy to add new services without modifyin existing ones, as the services don't need to know about other services. Pub-sub is also a good fit for event driven workflows and is scalable.
 
 ### 1.3 Learning Objectives
 
-- Understand pub-sub pattern
-- Implement event-driven architecture
-- Design for quality attributes
-- Build scalable systems
+The Learning objectives are to understand pub-sub model, leverage this to implement an scalable event-drivem architecture. As a requirement of the project, we also need to understand and design for atleast three quality attributes.
 
 ---
 
@@ -263,8 +250,6 @@ Campaign Total: $0.60
 - Successfully implemented pub-sub architecture  
 - Demonstrated 3 quality attributes  
 - Created working demo with budget tracking  
-- Comprehensive documentation  
-- Learned event-driven design patterns
 
 ### 7.2 Key Learnings
 

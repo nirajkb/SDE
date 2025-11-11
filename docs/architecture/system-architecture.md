@@ -1,4 +1,4 @@
-# Ad Click Charging System - Architecture
+# System Architecture of the Ad Click Charging System
 
 ## High-Level Architecture Diagram
 
@@ -41,13 +41,14 @@
 ## Component Details
 
 ### 1. Click Ingestion Layer
-This is where all the clicks will first enter the system.
 
-- **Load Balancer (NGINX)**: Using NGINX as it's lightweight and can handle concurrent connections. It will spread the incoming click requests across multiple API instances so no single server gets overwhelmed.
+The Click Ingestion Layer consists of a load balancer and the click ingestion API. This layer is the first layer where the clicks made on the ads will enter the system.
 
-- **Click Ingestion API (Node.js)**: A simple Node.js HTTP server. The primary job of this server is to validate the click data and add some additional information like timestamps and IP addresses before passing it along.
+- **Load Balancer**: We need a load balance layer that can handle concurrent connections and distribute the load (i.e. incoming clicks) across multiple instances, there by protecting the system from overload. NGINX is one of the light weight options widely used in the industry. 
 
-- **Rate Limiting**: Basic rate limiting to prevent Denial of Service attacks. Set it to 1000 clicks per minute per IP address
+- **Click Ingestion API**: This is a simple HHTP server. This server validates the incoming clicks and decorates it with additional information, in our case time stamp and ip address, and passes the validated clicks to the next stage of processing. Node.js would be a good option to clickly implement a simple HTTP server. 
+
+- **Rate Limiting**: Basic rate limiting to prevent Denial of Service attacks. Ideally the load balancer or the API Gateay would provide it. For a simple setup, it is set to 1000 clicks/minute/IP address for this project.
 
 ### 2. Message Queue (Pub-Sub Core)
 Heart of the pub-sub architecture. Using Kafka for pub-sub
@@ -64,21 +65,20 @@ Heart of the pub-sub architecture. Using Kafka for pub-sub
 ### 3. Processing Services
 Split the processing into three separate services as per microservices architecture:
 
-- **Fraud Detection Service**: This is the most complex component. Simple checks based on velocity and location. We will implement a basic fraud detection using IP analysis, click velocity checks, and user agent validation. It's not going to be as sophisticated as real ad platforms, but would catch obvious bot traffic.
+- **Fraud Detection Service**: This is the most complex component in a production system. However for the current project, we habe implemenetd a simple fraud detection system based on the velocity and location. The logic includes validating user agent, velocity of incoming clicks and locations from where the clicks originated i.e. the IP address. These simple checks could handle a wide variety of fraudulent clicks, though it will fall well short of sophisticated attacks. 
 
-- **Billing Service**: Handles the money side of things. It calculates costs based on campaign bid amounts and updates advertiser budgets. Will use transactions here since we're dealing with financial data.
+- **Billing Service**: This service handles the money side of things. It calculates the costs to an advertiser based on campaign bid amounts and accordingly reduces available advertiser budget. For the implementation of billing service, we use transation as we are dealing with financial data and we would like to be extra careful with financials. 
 
-- **Analytics Service**: Collects real-time metrics. Subscribes to billing events and creates hourly/daily aggregations for reporting.
+- **Analytics Service**: This service collects real-time metrics. This will subscribes to billing events and create hourly/daily aggregations for reporting. We should note here that data collected by Analytics service is not used for billing. It is rather downstream to billing
 
 ### 4. Data Layer
-Kept the database architecture simple by using MySQL everywhere:
+We keep the the database architecture simple and use MySQL for all usecases. The three usecases we implement are Fraud, Billing and Analytics.
 
-- **MySQL Databases**: Using MySQL for all persistent storage needs:
-  - **Fraud Database**: Stores click validation results and fraud scores
-  - **Billing Database**: Financial transactions and campaign budgets
-  - **Analytics Database**: Time-series data and pre-calculated metrics
+- **Fraud Database**: This stores the result of click validation and the fraud scores for each click
+- **Billing Database**: This stores the financial transactions, advertiser budgets and the campaign budgets
+- **Analytics Database**: This stores the time-series data, which are pre-calculated metrics
 
-- **Redis Cache**: Used separately for caching session data and rate limiting counters. Much faster than hitting MySQL for these frequent operations.
+- **Redis Cache**: We used Redic as the cache for the session data and the counter for rate limits. We use cache as it is much faster than using MySQL for these operations which are frequenct in nature.
 
 ## Design Decisions and Challenges
 
@@ -91,27 +91,9 @@ Selected pub-sub architecture for the following reasons:
 ### Implementation Challenges
 - **Message Ordering**: Addressed out-of-order processing by using Kafka partitioning with campaign_id as the key.
 - **Exactly-Once Processing**: Prevented duplicate charges by implementing idempotency checks using unique event IDs.
-- **Database Performance**: Added proper indexes and connection pooling to handle high click volumes.
+- **Database Performance**: Added indexes and implemented connection pooling to handle high click volumes.
 
-### Future Improvements
-- **Error Handling**: Implement dead letter queues for failed message processing.
-- **Monitoring**: Add comprehensive metrics and alerting beyond basic logging.
-- **Testing**: Expand test coverage with more comprehensive unit and integration tests.
-
-## Technology Choices
-
-### Selected Technologies
-- **Node.js**: Handles concurrent connections efficiently, suitable for high-volume click processing.
-
-- **Apache Kafka**: Chosen over Redis and RabbitMQ for its ability to handle millions of messages with built-in replication and persistence.
-
-- **MySQL**: Selected for operational simplicity. Can handle both transactional and analytical workloads effectively.
-
-- **NGINX**: Lightweight load balancer with good performance characteristics and extensive documentation.
-
-- **Docker**: Ensures consistent deployment across different environments and simplifies service management.
-
-### Performance Targets
+## Performance Targets
 Based on research of production ad platforms:
 - 10,000 clicks per second throughput
 - Under 100ms API response time
@@ -135,6 +117,3 @@ The architecture is designed to support these targets with proper optimization a
 - Monitoring dashboard implementation
 - Improved error handling and recovery mechanisms
 - Security enhancements (authentication, encryption)
-
-### Key Insights
-The pub-sub pattern provides significant scalability benefits but introduces operational complexity. Distributed system debugging requires different approaches compared to monolithic applications. The architecture demonstrates viability for production ad platforms with additional refinement and optimization.

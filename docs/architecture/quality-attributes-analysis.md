@@ -2,8 +2,7 @@
 
 ## Overview
 
-This document documents three key quality attributes implemented in this project: **Performance**, **Scalability**, and **Reliability**. Justification for each attribute is provided through design decisions and proofs of implementation is also added.
-cument
+For this project we selection three quality attributes - Performance, Scalability and Reliability. This document highlights how these were achieved through design decision and implementation.
 
 ---
 
@@ -22,7 +21,7 @@ cument
 - Each subscriber processes independently
 - No blocking operations
 
-**Code Evidence** (`src/services/click-ingestion.js`):
+**Source Code** (`src/services/click-ingestion.js`):
 ```javascript
 // Publish to event bus - non-blocking
 eventBus.publish('click-events', clickEvent);
@@ -38,7 +37,7 @@ res.json({ success: true, message: 'Click received' });
 - No disk I/O
 - Direct function calls between services
 
-**Code Evidence** (`src/config/event-bus.js`):
+**Source Code** (`src/config/event-bus.js`):
 ```javascript
 publish(topic, data) {
   this.emit(topic, data);  // Immediate in-memory event
@@ -79,7 +78,7 @@ From demo run with 20 clicks:
 - Can run multiple instances of any service
 - Load distributed automatically
 
-**Code Evidence** (`src/app.js`):
+**Source Code** (`src/app.js`):
 ```javascript
 // Each service subscribes independently
 fraudDetection.start();  // Can run multiple instances
@@ -101,7 +100,7 @@ analytics.start();       // Can run multiple instances
 - All billing instances get validated-clicks
 - Load balanced automatically
 
-**Code Evidence** (`src/config/event-bus.js`):
+**Source Code** (`src/config/event-bus.js`):
 ```javascript
 subscribe(topic, callback) {
   this.on(topic, callback);  // Multiple subscribers allowed
@@ -137,17 +136,17 @@ Analytics: 2 instances (Kafka consumer group)
 ### Target Metrics
 - 99.9% uptime
 - No data loss
-- Graceful error handling
+- Error Handling 
 
 ### Design Decisions for Reliability
 
 #### 3.1 Budget Validation
-**Implementation**: Check advertiser budget before charging
-- Prevents overspending
-- Rejects clicks when budget exhausted
-- Maintains financial integrity
+**Implementation**: We check advertiser budget, and if there is a balance we charge the click. The charge never goes beyond remaining advertiser budget.
+- Protects advertisers against overspending
+- If the budget is exhausted the clicks are rejected and not charged
+- Maintains integrity of billing system.
 
-**Code Evidence** (`src/services/billing-service.js`):
+**Source Code** (`src/services/billing-service.js`):
 ```javascript
 // Check if advertiser has enough budget
 if (budget.remaining < cost) {
@@ -158,16 +157,16 @@ if (budget.remaining < cost) {
 
 
 #### 3.2 Fraud Detection
-**Implementation**: Validate clicks before billing
-- Check user agent
-- Analyze IP address
-- Calculate fraud score
-- Block suspicious clicks
+**Implementation**: Validate clicks before we charge. Following checks are performed
+- User agent
+- IP address
+- A fraud score is calculated
+- As a result, suspicious clicks are blocked
 
-**Code Evidence** (`src/services/fraud-detection.js`):
+**Source Code** (`src/services/fraud-detection.js`):
 ```javascript
 if (fraudScore >= 0.7) {
-  // This is fraud!
+  // This click needs to be ignored
   eventBus.publish('fraud-alerts', {...});
   // Don't publish to validated-clicks
 }
@@ -175,12 +174,12 @@ if (fraudScore >= 0.7) {
 
 
 #### 3.3 Error Handling
-**Implementation**: Try-catch blocks and validation
-- Input validation in API
-- Error logging
-- Graceful degradation
+**Implementation**: Following checks are performed
+- API Input parameters are validated
+- Error logging is implemented
+- Graceful handling of errors
 
-**Code Evidence** (`src/services/click-ingestion.js`):
+**Source Code** (`src/services/click-ingestion.js`):
 ```javascript
 try {
   // Validate required fields
@@ -196,29 +195,29 @@ try {
 
 
 #### 3.4 Service Independence
-**Implementation**: Services operate independently
-- If fraud detection fails, billing can still work
-- If analytics fails, billing continues
-- No cascading failures
+**Implementation**: Services are implemented such that each of them operate independently
+- For example, if fraud detection fails, billing can continue to work
+- For example, If the analytics service fails, the billing still continues to run
+- Failures are not cascaded, they are isolated to the service that failed.
 
 
 ### Reliability Test Scenarios
 
 **Scenario 1: Budget Exhaustion**
 - Initial budget: $100
-- After spending $100, next click rejected
-- Result: System prevents overspending
+- After spending $100, all further clicks are rejected
+- Result: System prevents overspending and hence overcharging to employers
 
 **Scenario 2: Fraud Detection**
-- Bot user agent detected
-- Fraud score > 0.7
-- Result: Click blocked before billing
+- IF Bot user agent detected
+- AND Fraud score > 0.7
+- Result: Click is rejected and excluded from billing
 
 **Scenario 3: Invalid Input**
 - Missing required fields
-- Result: 400 error returned, system continues
+- Result: 400 error is returned and system continues to function
 
-**Conclusion**: System handles error conditions reliably.
+**Conclusion**: System reliably handles the error and edge cases
 
 ---
 
@@ -232,9 +231,9 @@ try {
 
 ### Key Takeaways
 
-1. **Performance**: Achieved through asynchronous processing and minimal per-service work
-2. **Scalability**: Enabled by pub-sub architecture and stateless services
-3. **Reliability**: Ensured through validation, error handling, and service independence
+1. **Performance**: High performance is achieved through asynchronous processing and minimal per-service work
+2. **Scalability**: Scalability of system is achieved  by pub-sub architecture and stateless services
+3. **Reliability**: System reliabbility is ensured through validation, error handling, and service independence
 
 ### Future Improvements
 

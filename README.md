@@ -30,7 +30,7 @@ SDE/
 - `docs/architecture/detailed-design.md` - Service patterns, algorithms, and implementation details
 - `docs/architecture/quality-attributes-analysis.md` - Performance, scalability, and reliability analysis
 - `docs/database/schema-design.md` - Complete MySQL database schema with tables and relationships
-- `docs/report/technical-report.md` - Complete technical report
+- `docs/report/project-report.md` - Complete project report
 - `docs/presentation/presentation-slides.md` - Presentation slides
 
 **Implementation:**
@@ -53,7 +53,7 @@ SDE/
 2. **Technical Details**: Review `docs/architecture/detailed-design.md` for service patterns and algorithms
 3. **Quality Attributes**: Check `docs/architecture/quality-attributes-analysis.md` for performance, scalability, and reliability
 4. **Database Design**: See `docs/database/schema-design.md` for complete schema specifications
-5. **Technical Report**: Read `docs/report/technical-report.md` for comprehensive project documentation
+5. **Project Report**: Read `docs/report/project-report.md` for comprehensive project documentation
 
 ### Running the System
 
@@ -94,7 +94,7 @@ Press Ctrl+C in Terminal 1 to see final statistics including budget summaries.
 - **schema-design.md**: MySQL table definitions, indexing strategy, and data management approaches
 
 ### Project Documentation
-- **technical-report.md**: Complete technical report with problem statement, solution, implementation, testing, and conclusions
+- **project-report.md**: Complete project report with problem statement, solution, implementation, testing, and conclusions
 - **presentation-slides.md**: Presentation slides covering all aspects of the project
 
 ### Implementation

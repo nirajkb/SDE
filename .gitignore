@@ -11,7 +11,7 @@
 !docs/presentation/
 !docs/presentation/presentation-slides.md
 !docs/report/
-!docs/report/technical-report.md
+!docs/report/project-report.md
 
 # Keep directory structure with .gitkeep files
 !docs/database/
